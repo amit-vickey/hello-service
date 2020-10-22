@@ -42,7 +42,9 @@ func serveHTTP1(l net.Listener) {
 
 func startServer() {
 	listener = bufconn.Listen(bufSize)
-	/*mux := cmux.New(listener)
+	/*
+	CMUX Use Link: https://godoc.org/github.com/soheilhy/cmux#example
+	mux := cmux.New(listener)
 	grpcL := mux.Match(cmux.HTTP2HeaderField("content-type", "application/grpc"))
 	httpL := mux.Match(cmux.Any())
 	go serveGRPC(grpcL)
@@ -60,9 +62,10 @@ func startServer() {
 	}()*/
 	/*mux := http.NewServeMux()
 	mux.Handle(twirpHandler.PathPrefix(), twirpHandler)*/
+	//TODO: Need a way to attach our server to a grpc server
 	grpcServer = grpc.NewServer()
 	log.Println(grpcServer.GetServiceInfo())
-	//twirpHandler := pb.NewHelloWorldServer(&server.HelloWorldServer{}, nil)
+	// ServiceDesc example: /Users/amitvickey/go/src/cloud.google.com/go/pubsub/internal/benchwrapper/proto/pubsub.pb.go:190
 	serviceDescriptor := grpc.ServiceDesc{
 		ServiceName: "payout-links",
 		HandlerType: (*server.HelloWorldServer)(nil),
